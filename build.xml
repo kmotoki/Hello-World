@@ -4,7 +4,7 @@
          default="main">
 
     <target name="main">
-        <echo>Hello holow!</echo>
+        <echo>Hello Hello!</echo>
     </target>
 
 </project>
