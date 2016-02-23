@@ -4,7 +4,7 @@
          default="main">
 
     <target name="main">
-        <echo>Hello Github!</echo>
+        <echo>Hello Github?</echo>
     </target>
 
 </project>
