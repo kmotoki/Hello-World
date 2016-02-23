@@ -4,7 +4,7 @@
          default="main">
 
     <target name="main">
-        <echo>Hello Jenkins!</echo>
+        <echo>Hello Gunmachan!</echo>
     </target>
 
 </project>
