@@ -1,0 +1,3 @@
+git checkout -b n変更
+git push origin n変更
+

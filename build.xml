@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="EUC-JP"?>
+<project name="blank"
+         basedir="."
+         default="main">
+
+    <target name="main">
+        <echo>Hello holow!</echo>
+    </target>
+
+</project>
