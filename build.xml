@@ -1,10 +1,62 @@
-<?xml version="1.0" encoding="EUC-JP"?>
+<?xml version="1.0" encoding="utf8"?>
+
 <project name="blank"
-         basedir="."
-         default="main">
+         default="project"
+         xmlns:cs="antlib:com.puppycrawl.tools.checkstyle">
+         
+    <property name="report.dir" value="reports" />
 
-    <target name="main">
-        <echo>Hello holow!</echo>
+    <target name="project" depends="checkstyle,findbugs" />
+
+    <!-- "checkstyle"タスクを定義する -->
+    <taskdef resource="checkstyletask.properties"
+             classpath="lib/checkstyle-5.7-all.jar"/>
+    
+    <target name="checkstyle" depends="init">
+        <checkstyle configURL="https://raw.githubusercontent.com/verve-inc/CodingStyleGuides/master/Tools/Checkstyle/verve_java.xml">
+            <fileset dir="WEB-INF/src">
+                <!-- 拡張子が".java"のファイルだけをチェックの対象とする。 -->
+                <include name="**/*.java" />
+            </fileset>
+            <formatter type="xml" toFile="${report.dir}/checkstyle-result.xml"/>
+        </checkstyle>
     </target>
-
+    
+    <!-- "findbugs"タスクを定義する -->
+    <property name="findbugs.lib.dir" location="/usr/local/findbugs-3.0.0" />
+    <property name="report.findbugs.dir" location="./findbugs" />
+    <path id="findbugs.lib">
+        <pathelement location="${findbugs.lib.dir}/lib/findbugs.jar" />
+    </path>
+    
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" classpathref="findbugs.lib" />
+    
+    <target name="findbugs" depends="init,compile">
+        <findbugs home="${findbugs.lib.dir}" output="xml" outputFile="${report.dir}/findbugs-result.xml" failOnError="true">
+            <class location="WEB-INF/classes" />
+            <auxClasspath path="">
+                <fileset dir="lib">
+                    <include name="**/*.jar" />
+                </fileset>
+                <fileset dir="WEB-INF/lib">
+                    <include name="**/*.jar" />
+                </fileset>
+            </auxClasspath>
+            <sourcePath path="WEB-INF/src" />
+        </findbugs>
+    </target>
+    
+    <target name="compile">
+        <ant antfile="WEB-INF/build.xml" target="compile" inheritAll="false" inheritRefs="false" useNativeBaseDir="true">
+            <property name="web.xml" value="web-release.xml"/>
+            <property name="log4j.properties" value="log4j-release.properties" />
+            <property name="setting.properties" value="setting-release.properties" />
+        </ant>
+    </target>
+    
+    <target name="init">
+        <delete dir="${report.dir}" />
+        <mkdir dir="${report.dir}" />
+    </target>
 </project>
+

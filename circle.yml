@@ -1,3 +1,4 @@
 machine:
+    timezone: Asia/Tokyo
     java:
         version: openjdk7
